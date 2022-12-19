@@ -95,3 +95,12 @@ class requests:
         for i in range(1,len(users)):
             if(c.fetchone()[0] == self.username):
                 bud = c.fetchone()[2]
+        houseprice=0
+        c.execute("SELECT * FROM housesforsale")
+        houses = c.fetchall()
+        for i in range(0,len(houses)):
+            if(c.fetchone()[0] == self.propertyID):
+                houseprice = c.fetchone()[1]
+        c.execute('UPDATE data SET currentpropertyID =0 WHERE username ='+self.username+" ")
+        c.execute('UPDATE data SET budget'+(bud + houseprice)+' WHERE username ='+self.username+" ")
+        c.execute("INSERT INTO housesforsale VALUES ("+self.propertyID+","+self.price+","+self.area+","+self.location+")")
